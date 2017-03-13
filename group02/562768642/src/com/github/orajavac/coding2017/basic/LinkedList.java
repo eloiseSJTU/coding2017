@@ -2,9 +2,9 @@ package com.github.orajavac.coding2017.basic;
 
 public class LinkedList implements List,Iterator {
 	
-private Node head;
+	private Node head;
 
-private Node current;
+	private Node current;
 	
 	private int size=0;
 	
@@ -31,15 +31,32 @@ private Node current;
 	}
 	public Object remove(int index){
 		int s=size();
-		Node n=head;
-		Node p=null;
-		while (s>index){
-			p=n.next;
-			n=p;
-			s--;
+		if (s==index){
+			Node n=head.next;
+			head=n;
+			return null;
 		}
-		
+		Node n=head;
+		Node p = null;
+		while (n!=null){
+			s--;
+			if (s==index){
+				p=n.next;			
+				n.next=p.next;
+				break;
+			}
+			n=n.next;
+		}
 		return null;
+	}
+	
+	public void listNode(){
+		Node c = this.head;
+		while(c!=null){
+			System.out.print(c.data+ " -> ");
+			c=c.next;
+		}
+		System.out.println();
 	}
 	
 	public int size(){
@@ -56,41 +73,30 @@ private Node current;
 		if (this.head==null){
 			this.head = new Node();
 			this.head.data=o;
+		}else{
+			Node f = new Node();
+			Node n=head;
+			Node p=null;
+			while (n!=null){
+				p=n;
+				n=n.next;
+			}
+			f.data=o;
+			p.next=f;
 		}
 	}
 	public void addLast(Object o){
 		add(o);
 	}
 	public Object removeFirst(){
-		int s=size();
-		int index=0;
-		Node c = this.head;
-		while(c!=null){
-			index=s--;
-			if (index==2){
-				System.out.println(c.next.data);
-				
-				break;
-			}
-			c=c.next;
-		}
+		remove(1);
 		return null;
 	}
 	public Object removeLast(){
-		Node e = this.head.next;
-		this.head=null;
-		this.head=e;
+		remove(size());
 		return null;
 	}
 	
-	public void listNode(){
-		Node c = this.head;
-		while(c!=null){
-			System.out.print(c.data+ " -> ");
-			c=c.next;
-		}
-		System.out.println();
-	}
 	public Iterator iterator(){
 		LinkedList l = new LinkedList();
 		l.head=this.head;
