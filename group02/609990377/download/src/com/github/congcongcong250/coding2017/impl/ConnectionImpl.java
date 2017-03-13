@@ -9,7 +9,7 @@ import com.github.congcongcong250.coding2017.api.Connection;
 
 public class ConnectionImpl implements Connection{
 
-	private volatile URLConnection urlconn;
+	private URLConnection urlconn;
 
 	public ConnectionImpl(URLConnection c){
 		urlconn = c;
@@ -17,10 +17,20 @@ public class ConnectionImpl implements Connection{
 	
 	@Override
 	public byte[] read(int startPos, int endPos) throws IOException {
+//		urlconn.setRequestProperty("Range", "bytes=" + startPos + "-" + endPos);
 		InputStream is = urlconn.getInputStream();
 		int len = endPos - startPos + 1;
 		byte content[] = new byte[len];
-		is.read(content, startPos, len);
+		
+
+		int offset = 0;
+//		int i = 0;
+		while ((len = is.read(content, offset, content.length - offset)) != -1) {
+			System.out.println("off: "+offset+", len:"+len +", i");
+			offset += len;
+		}
+		
+
 		is.close();
 		return content;
 	}

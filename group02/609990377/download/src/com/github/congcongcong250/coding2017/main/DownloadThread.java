@@ -21,22 +21,20 @@ public class DownloadThread extends Thread{
 	}
 	public void run(){
 		int len = endPos - startPos + 1;
-		byte res[] = new byte[len];
-		try {
-			res = conn.read(startPos, endPos);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		String path = "./res.jpeg";
-		RandomAccessFile f;
 		
 		try {
-			f = new RandomAccessFile(new File(path), "rw");
-			f.seek(startPos);
-			f.write(res);
-			f.close();
+			byte res[]  = conn.read(startPos, endPos);
+		
+			String path = "./src/res.txt";
+			
+			RandomAccessFile f;
+
+			if( res != null){
+				f = new RandomAccessFile(new File(path), "rw");
+				f.seek(startPos);
+				f.write(res,0,res.length);
+				f.close();
+			}
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

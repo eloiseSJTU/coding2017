@@ -40,13 +40,46 @@ public class FileDownloader {
 			conn = cm.open(this.url);
 
 			int length = conn.getContentLength();
+			int nb_thd = 1;
+			if(length < nb_thd){
+				nb_thd = 1;
+			}
+			int remainder = length%nb_thd;
+			int partialLen = (length + remainder)/nb_thd;
 
-			Thread thread1 = new DownloadThread(conn, 0, length - 1);
-			thread1.start();
-
-		} catch (ConnectionException e) {
+			DownloadThread thds[] = new DownloadThread[nb_thd];
+			Connection conns[] = new Connection[nb_thd];
+			int startPos = 0 ;
+			int endPos = partialLen - 1;
+			
+			
+			for(int i = 0 ; i < nb_thd  ; i++){
+				conns[i] = cm.open(url);
+				thds[i] = new DownloadThread(conn, startPos, endPos);
+				thds[i].start();
+				
+				startPos +=  partialLen;
+				endPos += partialLen;
+				if( nb_thd == i+2){
+					endPos -= remainder;
+				}
+			}
+			
+			for(int i = 0 ; i < nb_thd ; i++){
+				thds[i].join();
+			}
+			if( listener != null){
+				listener.notifyFinished();
+			}
+			for(int i = 0 ; i < nb_thd ; i++){
+				conns[i].close();
+			}
+		} catch (ConnectionException  e) {
+			e.printStackTrace();
+		} catch ( InterruptedException e){
 			e.printStackTrace();
 		} finally {
+			
 			if (conn != null) {
 				conn.close();
 			}

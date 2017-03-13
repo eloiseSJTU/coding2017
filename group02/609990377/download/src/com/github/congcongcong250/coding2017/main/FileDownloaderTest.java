@@ -21,8 +21,8 @@ public class FileDownloaderTest {
 	@Test
 	public void testDownload() {
 		
-		String url = "http://inews.gtimg.com/newsapp_bt/0/1209438116/1000";
-		
+		String url = "http://localhost:8000/HP1.txt";
+//		url = "https://www.baidu.com/img/bd_logo.png";
 		FileDownloader downloader = new FileDownloader(url);
 
 	
@@ -43,9 +43,9 @@ public class FileDownloaderTest {
 		// 等待多线程下载程序执行完毕
 		while (!downloadFinished) {
 			try {
-				System.out.println("还没有下载完成，休眠五秒...Downloading...");
+				System.out.println("还没有下载完成，休眠3秒...Downloading...");
 				//休眠5秒
-				Thread.sleep(5000);
+				Thread.sleep(10);
 			} catch (InterruptedException e) {				
 				e.printStackTrace();
 			}
