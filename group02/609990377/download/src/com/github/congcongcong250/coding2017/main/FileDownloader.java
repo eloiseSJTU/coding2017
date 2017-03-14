@@ -12,7 +12,8 @@ public class FileDownloader {
 	DownloadListener listener;
 
 	ConnectionManager cm;
-
+	int nb_thd = 4;
+	
 	public FileDownloader(String _url) {
 		this.url = _url;
 
@@ -40,15 +41,15 @@ public class FileDownloader {
 			conn = cm.open(this.url);
 
 			int length = conn.getContentLength();
-			int nb_thd = 1;
+			
 			if(length < nb_thd){
 				nb_thd = 1;
 			}
 			int remainder = length%nb_thd;
 			int partialLen = (length + remainder)/nb_thd;
 
-			DownloadThread thds[] = new DownloadThread[nb_thd];
-			Connection conns[] = new Connection[nb_thd];
+			final DownloadThread thds[] = new DownloadThread[nb_thd];
+			final Connection conns[] = new Connection[nb_thd];
 			int startPos = 0 ;
 			int endPos = partialLen - 1;
 			
@@ -65,18 +66,27 @@ public class FileDownloader {
 				}
 			}
 			
-			for(int i = 0 ; i < nb_thd ; i++){
-				thds[i].join();
-			}
-			if( listener != null){
-				listener.notifyFinished();
-			}
-			for(int i = 0 ; i < nb_thd ; i++){
-				conns[i].close();
-			}
+			new Thread(new Runnable()
+	        {
+	            public void run() {
+	            	try{
+		            	for(int i = 0 ; i < nb_thd ; i++){
+		    				thds[i].join();
+		    			}
+		    			if( listener != null){
+		    				listener.notifyFinished();
+		    			}
+	            	}catch ( InterruptedException e){
+	        			e.printStackTrace();
+	        		}finally{
+	        			for(int i = 0 ; i < nb_thd ; i++){
+		    				conns[i].close();
+		    			}
+	        		}
+	            }
+	        }).start();
+			
 		} catch (ConnectionException  e) {
-			e.printStackTrace();
-		} catch ( InterruptedException e){
 			e.printStackTrace();
 		} finally {
 			

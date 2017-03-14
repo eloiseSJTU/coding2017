@@ -22,15 +22,12 @@ public class ConnectionImpl implements Connection{
 		int len = endPos - startPos + 1;
 		byte content[] = new byte[len];
 		
-
 		int offset = 0;
-//		int i = 0;
 		while ((len = is.read(content, offset, content.length - offset)) != -1) {
-			System.out.println("off: "+offset+", len:"+len +", i");
+			
 			offset += len;
 		}
 		
-
 		is.close();
 		return content;
 	}
