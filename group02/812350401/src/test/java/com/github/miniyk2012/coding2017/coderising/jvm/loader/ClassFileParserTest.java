@@ -18,10 +18,10 @@ public class ClassFileParserTest {
 
     @BeforeClass
     public static void setUp() {
-        String path = ClassFileloaderTest.class.getClassLoader().getResource("jvm").getPath();
+        String path = ClassFileloaderTest.class.getClassLoader().getResource("classfile").getPath();
         ClassFileLoader loader = new ClassFileLoader();
         loader.addClassPath(path);
-        String className = "com.github.miniyk2012.coding2017.jvm.test.EmployeeV1";
+        String className = "com.coderising.jvm.test.EmployeeV1";
         byteCodes = loader.readBinaryCode(className);
         parser = new ClassFileParser();
     }

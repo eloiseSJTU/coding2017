@@ -3,6 +3,8 @@ package com.github.miniyk2012.coding2017.coderising.jvm.cmd;
 import com.github.miniyk2012.coding2017.coderising.jvm.clz.ClassFile;
 import com.github.miniyk2012.coding2017.coderising.jvm.constant.ConstantInfo;
 import com.github.miniyk2012.coding2017.coderising.jvm.constant.ConstantPool;
+import com.github.miniyk2012.coding2017.coderising.jvm.engine.ExecutionResult;
+import com.github.miniyk2012.coding2017.coderising.jvm.engine.StackFrame;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -109,8 +111,6 @@ public abstract class ByteCodeCommand {
 		return buffer.toString();
 	}
 
-	public abstract String toString(ConstantPool pool);
-	
 	public String getReadableCodeText(){
 		String txt = codeMap.get(opCode);
 		if(txt == null){
@@ -118,6 +118,11 @@ public abstract class ByteCodeCommand {
 		}
 		return txt;
 	}
-	
-	//public abstract void execute(StackFrame frame,FrameResult result);
+
+    /**
+     * 每个命令都要实现自己的功能
+     * @param frame 命令执行过程中需要访问函数栈帧中的操作数栈和局部变量表，因此把frame传入
+     * @param result
+     */
+    public abstract void execute(StackFrame frame, ExecutionResult result);
 }

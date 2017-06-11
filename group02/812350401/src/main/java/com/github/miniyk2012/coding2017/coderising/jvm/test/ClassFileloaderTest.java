@@ -20,14 +20,14 @@ public class ClassFileloaderTest {
 
     private static final String FULL_QUALIFIED_CLASS_NAME = "com/coderising/jvm/test/EmployeeV1";
 	static String path1 = ClassFileloaderTest.class.getClassLoader().getResource("struts").getPath();
-	static String path2 = ClassFileloaderTest.class.getClassLoader().getResource("jvm").getPath();
+	static String path2 = ClassFileloaderTest.class.getClassLoader().getResource("classfile").getPath();
     static ClassFile clzFile = null;
 
     static {
         ClassFileLoader loader = new ClassFileLoader();
         loader.addClassPath(path1);
         loader.addClassPath(path2);
-        String className = "com.github.miniyk2012.coding2017.jvm.test.EmployeeV1";
+        String className = "com.coderising.jvm.test.EmployeeV1";
 
         clzFile = loader.loadClass(className);
         // clzFile.print();
@@ -61,7 +61,7 @@ public class ClassFileloaderTest {
         loader.addClassPath(path1);
         loader.addClassPath(path2);
 		
-		String className = "com.github.miniyk2012.coding2017.jvm.test.EmployeeV1";
+		String className = "com.coderising.jvm.test.EmployeeV1";
 		
 		byte[] byteCodes = loader.readBinaryCode(className);
 		
@@ -75,7 +75,7 @@ public class ClassFileloaderTest {
     	ClassFileLoader loader = new ClassFileLoader();
 		loader.addClassPath(path1);
 		loader.addClassPath(path2);
-		String className = "com.github.miniyk2012.coding2017.jvm.test.EmployeeV1";
+		String className = "com.coderising.jvm.test.EmployeeV1";
 		byte[] byteCodes = loader.readBinaryCode(className);
 		byte[] codes = new byte[]{byteCodes[0],byteCodes[1],byteCodes[2],byteCodes[3]};
 		
